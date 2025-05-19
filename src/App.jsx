@@ -11,6 +11,8 @@ function App() {
   const localStream = useRef(null);
   const peersRef = useRef({});
   const [remoteStreams, setRemoteStreams] = useState([]);
+  const [micEnabled, setMicEnabled] = useState(true);
+  const [camEnabled, setCamEnabled] = useState(true);
 
   const servers = {
     iceServers: [
@@ -18,9 +20,30 @@ function App() {
     ],
   };
 
+  const toggleMicrophone = () => {
+    const audioTrack = localStream.current.getAudioTracks()[0];
+    if (audioTrack) {
+      audioTrack.enabled = !audioTrack.enabled;
+      setMicEnabled(audioTrack.enabled);
+    }
+  };
+
+  const toggleCamera = () => {
+    const videoTrack = localStream.current.getVideoTracks()[0];
+    if (videoTrack) {
+      videoTrack.enabled = !videoTrack.enabled;
+      setCamEnabled(videoTrack.enabled);
+    }
+  };
+
   const joinRoom = async () => {
     try {
-      localStream.current = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      // localStream.current = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      localStream.current = await navigator.mediaDevices.getUserMedia({ video: true, audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true
+      }, });
       localVideoRef.current.srcObject = localStream.current;
       console.log('localStream.current ==>', localStream.current)
     } catch (error) {
@@ -119,6 +142,9 @@ function App() {
           />
         ))}
       </div>
+      <br />
+      <button onClick={toggleMicrophone}>{micEnabled ? 'Выключить микрофон' : 'Включить микрофон'}</button>
+      <button onClick={toggleCamera}> {camEnabled ? 'Выключить камеру' : 'Включить камеру'}</button>
     </div>
   );
 }
