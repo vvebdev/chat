@@ -19,8 +19,13 @@ function App() {
   };
 
   const joinRoom = async () => {
-    localStream.current = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-    localVideoRef.current.srcObject = localStream.current;
+    try {
+      localStream.current = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      localVideoRef.current.srcObject = localStream.current;
+      console.log('localStream.current ==>', localStream.current)
+    } catch (error) {
+      console.log('no audio or video controller', error)
+    }
 
     socket.emit('join', roomId);
     setJoined(true);
@@ -95,7 +100,7 @@ function App() {
   }, [roomId]);
 
   return (
-    <div>
+    <div className='app'>
       {!joined && (
         <button onClick={joinRoom}>Присоединиться к комнате</button>
       )}
