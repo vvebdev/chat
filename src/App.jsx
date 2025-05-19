@@ -99,11 +99,11 @@ function App() {
       {!joined && (
         <button onClick={joinRoom}>Присоединиться к комнате</button>
       )}
-      <div className="grid grid-cols-3 gap-4 mt-4">
+      <div className="grid">
         <video ref={localVideoRef} autoPlay muted />
         {remoteStreams.map((stream, index) => (
           <video
-            key={stream.id}
+            key={index}
             autoPlay
             playsInline
             ref={video => {

@@ -24,10 +24,11 @@ a:hover {
 
 body {
   margin: 0;
+  padding: 12px;
   display: flex;
   place-items: center;
   min-width: 320px;
-  min-height: 100vh;
+  min-height: calc(100dvh - 24px);
 }
 
 h1 {
@@ -65,4 +66,18 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+video {
+  display: block;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  border-radius: 12px;
 }
