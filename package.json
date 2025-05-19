@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "deploy": "gh-pages -d dist"
   },
-  "homepage": "https://vvebdev.github.io",
+  "homepage": "https://vvebdev.github.io/chat",
   "dependencies": {
     "gh-pages": "^6.3.0",
     "react": "^19.0.0",
