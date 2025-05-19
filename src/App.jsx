@@ -11,8 +11,8 @@ function App() {
   const localStream = useRef(null);
   const peersRef = useRef({});
   const [remoteStreams, setRemoteStreams] = useState([]);
-  const [micEnabled, setMicEnabled] = useState(true);
-  const [camEnabled, setCamEnabled] = useState(true);
+  const [micEnabled, setMicEnabled] = useState(false);
+  const [camEnabled, setCamEnabled] = useState(false);
 
   const servers = {
     iceServers: [
@@ -44,6 +44,11 @@ function App() {
         noiseSuppression: true,
         autoGainControl: true
       }, });
+
+      // Отключаем доступ по умолчанию
+      localStream.current.getAudioTracks().forEach(track => (track.enabled = false));
+      localStream.current.getVideoTracks().forEach(track => (track.enabled = false));
+
       localVideoRef.current.srcObject = localStream.current;
       console.log('localStream.current ==>', localStream.current)
     } catch (error) {
