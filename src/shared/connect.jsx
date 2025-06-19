@@ -40,6 +40,7 @@ export default function Connect() {
     if (screenTrackRef.current) {
       screenTrackRef.current.stop();
       screenTrackRef.current = null;
+      localVideoRef.current.srcObject = localStream.current;
       const videoTrack = localStream.current.getVideoTracks()[0];
       for (const peerId in peersRef.current) {
         const sender = peersRef.current[peerId].getSenders().find(s => s.track.kind === 'video');
@@ -49,6 +50,7 @@ export default function Connect() {
       const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
       const screenTrack = screenStream.getVideoTracks()[0];
       screenTrackRef.current = screenTrack;
+      localVideoRef.current.srcObject = screenStream;
       for (const peerId in peersRef.current) {
         const sender = peersRef.current[peerId].getSenders().find(s => s.track.kind === 'video');
         if (sender) sender.replaceTrack(screenTrack);
@@ -131,7 +133,6 @@ export default function Connect() {
       });
     };
 
-
     if (initiator) {
       pc.onnegotiationneeded = async () => {
         const offer = await pc.createOffer();
@@ -185,15 +186,17 @@ export default function Connect() {
     <div className="connect">
       {!joined && <button onClick={joinRoom}>Присоединиться к комнате</button>}
       <div className="grid">
-        {joined && <video ref={localVideoRef} autoPlay muted />}
-        <video ref={localVideoRef} autoPlay muted />
+        {/* {joined && <video ref={localVideoRef} autoPlay muted />} */}
+        {/* {localVideoRef && <video ref={localVideoRef} autoPlay muted style={{ background: 'red'}} />} */}
+        <video style={{ visibility: joined ? 'unset' : 'hidden'}} ref={localVideoRef} autoPlay muted />
+        {console.log({remoteStreams})}
         {remoteStreams.map(({ userId, stream }, index) => (
           <div
             key={userId}
-            onClick={(e) => {
-              const video = e.currentTarget.previousSibling;
-              if (video) goFullscreen(video);
-            }}
+            // onClick={(e) => {
+            //   const video = e.currentTarget.previousSibling;
+            //   if (video) goFullscreen(video);
+            // }}
           >
             <video
               autoPlay
