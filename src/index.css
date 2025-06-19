@@ -127,13 +127,15 @@ video {
   }
 }
 
-.mic {
-  width: 24px;
-  height: 24px;
-  fill: currentColor;
-}
+.mic,
 .cam {
   width: 24px;
   height: 24px;
+}
+
+.mic {
+  fill: currentColor;
+}
+.cam {
   stroke: currentColor;
 }
