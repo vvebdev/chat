@@ -185,7 +185,7 @@ export default function Connect() {
     <div className="connect">
       {!joined && <button onClick={joinRoom}>Присоединиться к комнате</button>}
       <div className="grid">
-        <video ref={localVideoRef} autoPlay muted />
+        {joined && <video ref={localVideoRef} autoPlay muted />}
         {remoteStreams.map(({ userId, stream }, index) => (
           <div
             key={userId}
