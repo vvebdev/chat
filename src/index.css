@@ -24,12 +24,9 @@ a:hover {
 
 body {
   margin: 0;
-  padding: 12px;
+  padding: 0px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 320px;
-  min-height: calc(100dvh - 24px);
+  height: 100dvh;
 }
 
 h1 {
@@ -70,13 +67,44 @@ button:focus-visible {
   }
 }
 
-.app {
-  text-align: center;
+#root {
   width: 100%;
+  height: 100%;
+}
+
+.app {
+  display: flex;
+  /* text-align: center; */
+  width: 100%;
+  height: 100%;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+}
+
+.room {
+  flex-shrink: 0;
+}
+
+.main {
+  padding: 12px;
+}
+
+.connect {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 16px;
 }
 
 .grid {
   width: 100%;
+  height: 100%;
+  overflow: auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
@@ -87,4 +115,25 @@ video {
   aspect-ratio: 16 / 9;
   width: 100%;
   border-radius: 12px;
+}
+
+.controls {
+  margin-top: auto;
+  display: flex;
+  gap: 8px;
+
+  button {
+    color: white;
+  }
+}
+
+.mic {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+.cam {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
 }
