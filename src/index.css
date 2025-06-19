@@ -108,6 +108,8 @@ button:focus-visible {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
+  /* align-items: start; */
+  align-content: start;
 }
 
 video {
@@ -116,6 +118,10 @@ video {
   width: 100%;
   border-radius: 12px;
   background: #000;
+
+  &::-webkit-media-controls {
+    display: none !important;
+  }
 }
 
 .controls {

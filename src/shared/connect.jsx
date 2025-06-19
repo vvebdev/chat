@@ -186,17 +186,11 @@ export default function Connect() {
     <div className="connect">
       {!joined && <button onClick={joinRoom}>Присоединиться к комнате</button>}
       <div className="grid">
-        {/* {joined && <video ref={localVideoRef} autoPlay muted />} */}
-        {/* {localVideoRef && <video ref={localVideoRef} autoPlay muted style={{ background: 'red'}} />} */}
         <video style={{ visibility: joined ? 'unset' : 'hidden'}} ref={localVideoRef} autoPlay muted />
         {console.log({remoteStreams})}
         {remoteStreams.map(({ userId, stream }, index) => (
           <div
             key={userId}
-            // onClick={(e) => {
-            //   const video = e.currentTarget.previousSibling;
-            //   if (video) goFullscreen(video);
-            // }}
           >
             <video
               autoPlay
@@ -207,7 +201,7 @@ export default function Connect() {
                 }
               }}
             />
-            {/* <button
+            <button
               onClick={(e) => {
                 const video = e.currentTarget.previousSibling;
                 if (video) goFullscreen(video);
@@ -215,21 +209,9 @@ export default function Connect() {
               className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white text-sm px-2 py-1 rounded"
             >
               ⛶
-            </button> */}
+            </button>
           </div>
         ))}
-        {/* {remoteStreams.map((stream, index) => (
-          <video
-            key={index}
-            autoPlay
-            playsInline
-            ref={(video) => {
-              if (video && video.srcObject !== stream) {
-                video.srcObject = stream;
-              }
-            }}
-          />
-        ))} */}
       </div>
       {joined && <div className="controls">
         <button onClick={toggleMicrophone}>
