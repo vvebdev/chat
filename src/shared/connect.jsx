@@ -59,38 +59,86 @@ export default function Connect() {
     }
   };
 
+  // const joinRoom = async () => {
+  //   try {
+  //     // localStream.current = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+  //     localStream.current = await navigator.mediaDevices.getUserMedia({
+  //       // video: true,
+  //       video: {
+  //         aspectRatio: 16 / 9
+  //       },
+  //       audio: {
+  //         echoCancellation: true,
+  //         noiseSuppression: true,
+  //         autoGainControl: true,
+  //       },
+  //     });
+
+  //     // Отключаем доступ по умолчанию
+  //     localStream.current
+  //       .getAudioTracks()
+  //       .forEach((track) => (track.enabled = false));
+  //     localStream.current
+  //       .getVideoTracks()
+  //       .forEach((track) => (track.enabled = false));
+
+  //     localVideoRef.current.srcObject = localStream.current;
+  //     console.log("localStream.current ==>", localStream.current);
+  //   } catch (error) {
+  //     console.log("no audio or video controller", error);
+  //   }
+
+  //   socket.emit("join", roomId);
+  //   setJoined(true);
+  // };
+
   const joinRoom = async () => {
-    try {
-      // localStream.current = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      localStream.current = await navigator.mediaDevices.getUserMedia({
-        // video: true,
-        video: {
+  try {
+    // Пробуем получить камеру и микрофон
+    localStream.current = await navigator.mediaDevices.getUserMedia({
+      video: {
           aspectRatio: 16 / 9
-        },
+      },
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true,
+      },
+    });
+  } catch (error) {
+    console.warn("Не удалось получить и камеру, и микрофон:", error);
+
+    try {
+      // Пробуем получить только микрофон
+      localStream.current = await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true,
         },
       });
+    } catch (audioError) {
+      console.warn("Не удалось получить даже микрофон:", audioError);
 
-      // Отключаем доступ по умолчанию
-      localStream.current
-        .getAudioTracks()
-        .forEach((track) => (track.enabled = false));
-      localStream.current
-        .getVideoTracks()
-        .forEach((track) => (track.enabled = false));
-
-      localVideoRef.current.srcObject = localStream.current;
-      console.log("localStream.current ==>", localStream.current);
-    } catch (error) {
-      console.log("no audio or video controller", error);
+      // Создаём пустой поток, если совсем ничего нет
+      localStream.current = new MediaStream();
     }
+  }
 
-    socket.emit("join", roomId);
-    setJoined(true);
-  };
+  // Отключаем треки по умолчанию
+  localStream.current.getAudioTracks().forEach(track => track.enabled = false);
+  localStream.current.getVideoTracks().forEach(track => track.enabled = false);
+
+  // Устанавливаем локальное видео (если есть)
+  if (localVideoRef.current) {
+    localVideoRef.current.srcObject = localStream.current;
+  }
+
+  console.log("🎥 Локальный поток:", localStream.current);
+
+  socket.emit("join", roomId);
+  setJoined(true);
+};
 
   const goFullscreen = (videoElement) => {
     if (videoElement.requestFullscreen) {
