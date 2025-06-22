@@ -97,7 +97,8 @@ export default function Connect() {
     // Пробуем получить камеру и микрофон
     localStream.current = await navigator.mediaDevices.getUserMedia({
       video: {
-          aspectRatio: 16 / 9
+          aspectRatio: 16 / 9,
+          frameRate: { ideal: 120, max: 120 }
       },
       audio: {
         echoCancellation: true,
