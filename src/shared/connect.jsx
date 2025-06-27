@@ -47,7 +47,13 @@ export default function Connect() {
         if (sender && videoTrack) sender.replaceTrack(videoTrack);
       }
     } else {
-      const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+      const screenStream = await navigator.mediaDevices.getDisplayMedia({
+        video: {
+          width: 1280,
+          height: 720,
+          frameRate: { ideal: 60, max: 60 }
+        },
+      });
       const screenTrack = screenStream.getVideoTracks()[0];
       screenTrackRef.current = screenTrack;
       localVideoRef.current.srcObject = screenStream;
@@ -98,9 +104,6 @@ export default function Connect() {
     localStream.current = await navigator.mediaDevices.getUserMedia({
       video: {
         aspectRatio: 16 / 9,
-        width: 1280,
-        height: 720,
-        frameRate: { ideal: 60, max: 60 }
       },
       audio: {
         echoCancellation: true,
